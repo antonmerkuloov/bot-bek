@@ -6,7 +6,10 @@ const authenticateAdmin = require('./middleware/auth');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://featurebox-admin.netlify.app', 
+    credentials: true
+}));
 app.use(express.json());
 
 // Открытый маршрут: проверка пароля
