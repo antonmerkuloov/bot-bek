@@ -12,6 +12,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// 🟢 РОУТ ДЛЯ ПИНГА (чтобы UptimeRobot не давал серверу уснуть)
+app.get('/ping', (req, res) => {
+    res.status(200).send('pong');
+});
+
 // Открытый маршрут: проверка пароля
 app.post('/api/login', (req, res) => {
     const { password } = req.body;
@@ -30,14 +35,9 @@ app.use('/api/items', authenticateAdmin, require('./routes/items'));
 app.use('/api/characters', authenticateAdmin, require('./routes/characters'));
 app.use('/api/economy', authenticateAdmin, require('./routes/economy'));
 app.use('/api/runes', authenticateAdmin, require('./routes/runes'));
-// Позже сюда добавим:
-// app.use('/api/skills', authenticateAdmin, require('./routes/skills'));
-// app.use('/api/items', authenticateAdmin, require('./routes/items'));
-// app.use('/api/calibers', authenticateAdmin, require('./routes/calibers'));
-// app.use('/api/characters', authenticateAdmin, require('./routes/characters'));
-// app.use('/api/economy', authenticateAdmin, require('./routes/economy'));
 
+// 🟢 Слушаем порт (добавлен '0.0.0.0' для работы на хостинге)
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Бэкенд запущен на порту ${PORT}`);
 });
